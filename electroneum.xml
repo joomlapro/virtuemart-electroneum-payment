@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
+    <name>VirtueMart Electroneum Payment Method - ETNCommerce</name>
+    <creationDate>Oct 2018</creationDate>
+    <author>Claes Norin</author>
+    <authorUrl>https://joomlapro.com</authorUrl>
+    <copyright>Copyright (C) 2004 - 2018 joomlapro.com All rights reserved.</copyright>
+    <version>1.0</version>
+    <description>VirtueMart Electroneum Payment Method - ETNCommerce</description>
+    <files>
+        <filename plugin="electroneum">electroneum.php</filename>
+		<filename>electroneum.js</filename>
+        <folder>language</folder>
+		<folder>src</folder> 
+		<folder>tmpl</folder> 
+		<folder>fields</folder>
+    </files>
+	
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_vmpayment_electroneum.ini</language>
+    </languages>
+    <vmconfig>
+      <fields name="params">
+            <fieldset name="payment"  addfieldpath="/plugins/vmpayment/electroneum/fields">
+			    <field type="donate" name="donate" />
+				<field class="downloadkey" 	name="download_key" type="text" label="Download ID"  description="Download Id" default="" />
+				<field type="text" name="apikey" default="" class="input-large" size="55" label="API Key" description="API Key"/>
+				<field type="text" name="secret" default="" class="input-large" size="55" label="API Secret" description="API Secret"/>
+				<field type="text" name="outlet" default="" class="input-large" size="55" label="Outlet ID" description="Vendor Id"/>
+				
+                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_ELECTRONEUM_CURRENCY"
+                       description="VMPAYMENT_ELECTRONEUM_CURRENCY_TIP"/>
+                <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U"
+                       label="VMPAYMENT_ELECTRONEUM_STATUS_PENDING" description="VMPAYMENT_ELECTRONEUM_STATUS_PENDING_TIP"/>
+                <field name="send_invoice_on_order_null" type="radio" scope="com_virtuemart" default="1"
+                       label="VMPAYMENT_ELECTRONEUM_SEND_INVOICE_ON_ORDER_NULL"
+                       description="VMPAYMENT_ELECTRONEUM_SEND_INVOICE_ON_ORDER_NULL_TIP">
+                    <option value="0">COM_VIRTUEMART_NO</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
+                </field>
+            </fieldset>
+            <fieldset name="template">
+                <field name="payment_logos" type="vmfiles" multiple="true" directory="/images/virtuemart/payment"
+                       hide_none="1" label="VMPAYMENT_ELECTRONEUM_LOGOS"
+                       size="40"
+                       description="VMPAYMENT_ELECTRONEUM_LOGOS_TIP"/>
+                <field name="payment_info" type="textarea" cols="35" rows="5" label="VMPAYMENT_ELECTRONEUM_PAYMENTINFO"
+                       description="VMPAYMENT_ELECTRONEUM_PAYMENTINFO_TIP"/>
+            </fieldset>
+            <fieldset name="restrictions" >
+                <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
+                       label="VMPAYMENT_ELECTRONEUM_COUNTRIES" description="VMPAYMENT_ELECTRONEUM_COUNTRIES_TIP"/>
+                <field name="min_amount" type="text" label="VMPAYMENT_ELECTRONEUM_MIN_AMOUNT"
+                       description="VMPAYMENT_ELECTRONEUM_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPAYMENT_ELECTRONEUM_MAX_AMOUNT"
+                       description="VMPAYMENT_ELECTRONEUM_MAX_AMOUNT_TIP"/>
+            </fieldset>
+            <fieldset name="fee">
+                <field name="cost_per_transaction" type="text" label="VMPAYMENT_ELECTRONEUM_COST_PER_TRANSACTION"
+                       description="VMPAYMENT_ELECTRONEUM_COST_PER_TRANSACTION_TIP"/>
+                <field name="cost_min_transaction" type="text" label="VMPAYMENT_ELECTRONEUM_COST_MIN_TRANSACTION"
+                       description="VMPAYMENT_ELECTRONEUM_COST_MIN_TRANSACTION_TIP"/>
+                <field name="cost_percent_total" type="text" label="VMPAYMENT_ELECTRONEUM_COST_PERCENT_TOTAL"
+                       description="VMPAYMENT_ELECTRONEUM_COST_PERCENT_TOTAL_TIP"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_ELECTRONEUM_TAX"
+                       description="VMPAYMENT_ELECTRONEUM_TAX_TIP"/>
+            </fieldset>
+        </fields>
+    </vmconfig>
+	 <updateservers>
+        <server type="extension" name="VirtueMart Electroneum Payment Method - ETNCommerce"><![CDATA[https://joomlapro.com/index.php?option=com_rdsubs&view=updater&cat=20&type=3&format=xml]]></server>
+    </updateservers>
+</extension>
