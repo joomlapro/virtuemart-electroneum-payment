@@ -17,6 +17,10 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 		$vmtask = JRequest::getVar("vmtask");
 		if($vmtask == 'electroneumajax')
 		{
+			$cart = VirtueMartCart::getCart();
+			$cart->prepareCartData();
+			
+			
 			require_once("plugins/vmpayment/electroneum/src/Vendor.php");
 			require_once("plugins/vmpayment/electroneum/src/Exception/VendorException.php");
 			
@@ -26,6 +30,11 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 			 $secret = JRequest::getVar("secret"); 
 			 $outlet = JRequest::getVar("outlet"); 
 			 $total = JRequest::getVar("total"); 
+			 $virtuemart_order_id = JRequest::getVar("virtuemart_order_id"); 
+			 
+			 $orderModel = VmModel::getModel('orders');
+  		     $orderDetails = $orderModel->getOrder($virtuemart_order_id);
+			 
 			 
 			 $vendor = new \Electroneum\Vendor\Vendor($apikey, $secret);
 			 
@@ -35,12 +44,38 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 			 
 			 $result = $vendor->checkPaymentPoll(json_encode($payload));
 			 
+			 if (!class_exists ('VirtueMartModelCurrency')) {
+					require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
+			  }
+			  
+			  
+			 
+			  
+		  	 $currency = CurrencyDisplay::getInstance ('', $orderDetails['details']['BT']->virtuemart_vendor_id);
+			 
+			 
+			 $currencycode = $currency->_vendorCurrency_code_3;
+			 $ordertotal = $orderDetails['details']['BT']->order_total;
+		
+			 $etnshouldreceive =   $vendor->currencyToEtn($ordertotal, $currencycode);
+			 
+
 			 $return = array();
+			 $return['showerror'] = 0;
 	 	     if($result['status'] == 1) 
 			 {
-				 $return['success'] = 1;
-				 $return['amount'] = $result['amount'];
-				 $result['message'] = '';
+				 if($result['amount'] ==  $etnshouldreceive)
+				 {
+					 $return['success'] = 1;
+					 $return['amount'] = $result['amount'];
+					 $result['message'] = '';
+				 }
+				 else
+				 {
+					  $return['success'] = 0;
+					  $return['showerror'] = 1;
+				      $return['message'] = 'ETN Response Amount Not matched to Order Amount';
+				 }
 			 }
 			 else if (!empty($result['message'])) 
 			 {
@@ -73,9 +108,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 		$this->setConvertDecimal(array('min_amount','max_amount','cost_per_transaction','cost_min_transaction','cost_percent_total'));
 		
 		
-		
-		$document = JFactory::getDocument();
-		$document->addScript('plugins/vmpayment/electroneum/electroneum.js'); 
+		JHTML::script('plugins/vmpayment/electroneum/electroneum.js');
 	}
 
 	/**
