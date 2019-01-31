@@ -44,31 +44,27 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 			 
 			 $result = $vendor->checkPaymentPoll(json_encode($payload));
 			 
-			 if (!class_exists ('VirtueMartModelCurrency')) {
-					require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
-			  }
 			  
-			  
-			 
-			  
-		  	 $currency = CurrencyDisplay::getInstance ('', $orderDetails['details']['BT']->virtuemart_vendor_id);
-			 
-			 
-			 $currencycode = $currency->_vendorCurrency_code_3;
-			 $ordertotal = $orderDetails['details']['BT']->order_total;
-		
-			 $etnshouldreceive =   $vendor->currencyToEtn($ordertotal, $currencycode);
+			 $session = JFactory::getSession();
+			 $etnshouldreceive =   $session->get('etnvalue', "");
 			 
 
 			 $return = array();
 			 $return['showerror'] = 0;
-	 	     if($result['status'] == 1) 
+			 if($etnshouldreceive == '')
+			 {
+				  $return['success'] = 0;
+				  $return['showerror'] = 1;
+				  $return['message'] = 'Your session Timed out Please  Reload page and try again';
+			 }
+	 	     else if($result['status'] == 1) 
 			 {
 				 if($result['amount'] ==  $etnshouldreceive)
 				 {
 					 $return['success'] = 1;
 					 $return['amount'] = $result['amount'];
 					 $result['message'] = '';
+					$session->set('etnvalue', "");
 				 }
 				 else
 				 {
@@ -114,7 +110,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	/**
 	 * Create the table for this plugin if it does not yet exist.
 	 *
-	 * @author ValÃ©rie Isaksen
+	 * @author Valérie Isaksen
 	 */
 	public function getVmPluginCreateTableSQL () {
 
@@ -183,7 +179,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	/**
 	 *
 	 *
-	 * @author ValÃ©rie Isaksen
+	 * @author Valérie Isaksen
 	 */
 	function plgVmConfirmedOrder ($cart, $order, $thanks = false) {
 		
@@ -432,7 +428,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	 * This functions checks if the called plugin is active one.
 	 * When yes it is calling the standard method to create the tables
 	 *
-	 * @author ValÃ©rie Isaksen
+	 * @author Valérie Isaksen
 	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
@@ -445,7 +441,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	 * additional payment info in the cart.
 	 *
 	 * @author Max Milbers
-	 * @author ValÃ©rie isaksen
+	 * @author Valérie isaksen
 	 *
 	 * @param VirtueMartCart $cart: the actual cart
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
