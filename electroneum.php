@@ -20,6 +20,8 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 			$cart = VirtueMartCart::getCart();
 			$cart->prepareCartData();
 			
+			vmLanguage::loadJLang('com_virtuemart',true);
+			vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 			
 			require_once("plugins/vmpayment/electroneum/src/Vendor.php");
 			require_once("plugins/vmpayment/electroneum/src/Exception/VendorException.php");
@@ -64,7 +66,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 					 $return['success'] = 1;
 					 $return['amount'] = $result['amount'];
 					 $result['message'] = '';
-					$session->set('etnvalue', "");
+					 $session->set('etnvalue', "");
 				 }
 				 else
 				 {
@@ -110,7 +112,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	/**
 	 * Create the table for this plugin if it does not yet exist.
 	 *
-	 * @author Valérie Isaksen
+	 * @author ValÃ©rie Isaksen
 	 */
 	public function getVmPluginCreateTableSQL () {
 
@@ -179,7 +181,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	/**
 	 *
 	 *
-	 * @author Valérie Isaksen
+	 * @author ValÃ©rie Isaksen
 	 */
 	function plgVmConfirmedOrder ($cart, $order, $thanks = false) {
 		
@@ -428,7 +430,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	 * This functions checks if the called plugin is active one.
 	 * When yes it is calling the standard method to create the tables
 	 *
-	 * @author Valérie Isaksen
+	 * @author ValÃ©rie Isaksen
 	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
@@ -441,7 +443,7 @@ class plgVmPaymentElectroneum extends vmPSPlugin {
 	 * additional payment info in the cart.
 	 *
 	 * @author Max Milbers
-	 * @author Valérie isaksen
+	 * @author ValÃ©rie isaksen
 	 *
 	 * @param VirtueMartCart $cart: the actual cart
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid

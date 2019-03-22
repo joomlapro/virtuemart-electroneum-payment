@@ -5,11 +5,12 @@
     <author>Claes Norin</author>
     <authorUrl>https://joomlapro.com</authorUrl>
     <copyright>Copyright (C) 2004 - 2018 joomlapro.com All rights reserved.</copyright>
-    <version>1.0</version>
+    <version>1.1</version>
     <description>VirtueMart Electroneum Payment Method - ETNCommerce</description>
     <files>
         <filename plugin="electroneum">electroneum.php</filename>
 		<filename>electroneum.js</filename>
+		<filename>License_GPL2.txt</filename>
         <folder>language</folder>
 		<folder>src</folder> 
 		<folder>tmpl</folder> 

@@ -21,10 +21,15 @@ function checkelectroniumdata(val)
  	 }).done(
 	 function (data, textStatus){
 		
+		 jQuery("#error_div").html('');
 		 if(data.success == 0)
 		 {
 			 errorstring = '<div class="uk-alert" uk-alert><a href="" class="uk-alert-close uk-close"></a><p>'+data.message+'</p></div>';
-			 //jQuery("#error_div").html(errorstring);
+			 
+			 if(data.showerror == 1)
+			 {
+			 	jQuery("#error_div").html(errorstring);
+			 }
 			 
 			  setTimeout(function(){
 				checkelectroniumdata(1)

@@ -34,13 +34,17 @@ $outlet = $params->outlet;
 
 $ordertotal = $orderdetails['details']['BT']->order_total;
 $order_number = $orderdetails['details']['BT']->order_number;
-$order_id = $order_number = $orderdetails['details']['BT']->virtuemart_order_id;
+$order_id =  $orderdetails['details']['BT']->virtuemart_order_id;
+
 
 require_once("plugins/vmpayment/electroneum/src/Vendor.php");
 require_once("plugins/vmpayment/electroneum/src/Exception/VendorException.php");
 
 $vendor = new \Electroneum\Vendor\Vendor($apikey, $secret);
 $qrImgUrl = $vendor->getQr($ordertotal, $currency, $outlet);
+
+$session = JFactory::getSession();
+$session->set('etnvalue', $vendor->getEtn());	
 
 
 $formurl = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&returnfrom=electronium');
